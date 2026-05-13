@@ -38,11 +38,26 @@ Always verify that the `采购原因` column is not accidentally shifted into a 
 
 ## Reimbursement Rules Captured From User Preference
 
+- Before browser entry, classify each item as `个人报销` or `对公付款`.
+- Personal reimbursement pays the logged-in applicant; do not route personal reimbursement money to suppliers.
+- Public payment pays the invoice issuer or contract counterparty; do not route public-payment money to the logged-in applicant.
+- HuiLianYi titles must use Chinese Han characters rather than pinyin. If a brand or vendor is written in Latin letters, use a Chinese purpose phrase or official Chinese company short name in the title.
 - Same invoice title can be submitted under one expense/report when reasonable.
 - No-ticket evidence must be entered as `无票报销`, not as invoice reimbursement.
 - Upload files directly rather than importing zip packages.
 - Attach an updated submission list to the relevant reimbursement when the list content changes.
 - Separate reports by title when that improves audit clarity; combine same-title expenses when the user allows.
+
+## Document Type Decision
+
+Use this decision before creating a HuiLianYi document:
+
+| Evidence / intent | HuiLianYi document | Payee | Title pattern |
+| --- | --- | --- | --- |
+| Employee already paid and requests reimbursement | `个人报销` / daily reimbursement | Logged-in applicant | `YYYY年MM月<中文事项>费用报销` |
+| Company should pay the invoice seller | `对公支付单` | Invoice issuer | `YYYY年MM月<中文收款方或事项>对公付款` |
+| Company should pay a contract counterparty | `对公支付单` | Contract counterparty | `YYYY年MM月<中文合同方或事项>对公付款` |
+| Payer or recipient is ambiguous | Stop and ask | Unknown | Do not create the document yet |
 
 ## HuiLianYi Expense Types Observed
 
