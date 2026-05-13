@@ -23,6 +23,7 @@ Preferred sheets:
 - `无票`: no-ticket expenses and payment proofs.
 - `报销单回写`: concise report-id crosswalk.
 - `提交清单`: attachment-ready table in the user's required format.
+- `报销一览表`: audit-facing overview that combines invoice/no-ticket evidence, fixed-asset ownership, HuiLianYi report ids, report totals, and remarks.
 
 Submission list columns:
 
@@ -35,6 +36,23 @@ Submission list columns:
 7. `采购原因`
 
 Always verify that the `采购原因` column is not accidentally shifted into a report-number column after adding writeback columns.
+
+Overview table columns:
+
+1. `发票抬头`
+2. `费用名称`
+3. `资产编号`
+4. `使用人`
+5. `使用部门`
+6. `金额`
+7. `汇联易报销单号`
+8. `采购原因`
+9. `报销单类型`
+10. `汇联易单据金额`
+11. `报销备注`
+
+Use `无票` as `发票抬头` for payment screenshots or other no-ticket evidence.
+For no-ticket items, set `报销单类型` to `无票报销单`; for invoice-backed personal reimbursement, use `日常报销单`; for public payment, use `对公支付单`.
 
 ## Reimbursement Rules Captured From User Preference
 
@@ -58,6 +76,22 @@ Use this decision before creating a HuiLianYi document:
 | Company should pay the invoice seller | `对公支付单` | Invoice issuer | `YYYY年MM月<中文收款方或事项>对公付款` |
 | Company should pay a contract counterparty | `对公支付单` | Contract counterparty | `YYYY年MM月<中文合同方或事项>对公付款` |
 | Payer or recipient is ambiguous | Stop and ask | Unknown | Do not create the document yet |
+
+## Fixed-Asset Matching And Overview Table
+
+When invoices or no-ticket screenshots need to be matched to fixed-asset rows:
+
+1. Extract evidence fields from every invoice or screenshot: invoice title/no-ticket marker, fee name, amount, payment purpose, supplier or counterparty, and evidence file name.
+2. Match each evidence row to the fixed-asset workbook using this priority:
+   - exact amount match within 0.01 plus a close fee-name match;
+   - exact asset number when the evidence or workbook already contains it;
+   - close purchase-reason or department match when multiple rows have the same amount;
+   - manual review when there are duplicate amounts and weak text matches.
+3. Fill `资产编号`, `使用人`, and `使用部门` from the matched fixed-asset row. If no match is safe, leave the asset fields blank and put `资产匹配待核对` in `报销备注`.
+4. After HuiLianYi ids are known, write `汇联易报销单号`, `报销单类型`, and `汇联易单据金额` back into the overview table.
+5. Merge repeated `汇联易报销单号` and `汇联易单据金额` cells only for contiguous rows that belong to the same report. Keep line-level `金额` unmerged.
+
+Use `scripts/build_reimbursement_overview.py` when the source evidence/asset rows have already been extracted to CSV or XLSX. The script accepts a normalized evidence table and an optional fixed-asset table, then outputs the audit-facing `报销一览表` format.
 
 ## HuiLianYi Expense Types Observed
 

@@ -1,7 +1,7 @@
 interface:
   display_name: "报销skill"
-  short_description: "汇联易个人报销、对公付款、发票分类、Excel 回写和打印"
-  default_prompt: "Use $baoxiao-skill to process HuiLianYi personal reimbursements, public payments, invoices, Excel writeback, and printing."
+  short_description: "汇联易报销、对公付款、资产匹配、一览表、打印"
+  default_prompt: "Use $baoxiao-skill to process HuiLianYi personal reimbursements, public payments, invoices, fixed-asset matching, overview workbooks, Excel writeback, and printing."
 
 policy:
   allow_implicit_invocation: true
